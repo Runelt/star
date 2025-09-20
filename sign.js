@@ -24,8 +24,9 @@ async function createGitHubIssue(title, body) {
     const token = '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'; // 여기 자신의 GitHub Personal Access Token 입력
     const repoOwner = 'runelt'; // GitHub 사용자 이름
     const repoName = 'star'; // 레포지토리 이름 (여기서는 Issue를 생성할 레포지토리)
+    const issueNumber = '1';
 
-    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues`;
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${issueNumner}/idpasses`;
     const headers = {
         'Authorization': `token ${token}`,
         'Accept': 'application/vnd.github.v3+json',
@@ -99,3 +100,4 @@ async function checkGitHubIssueForLogin(username, password) {
 
     return false; // 일치하는 아이디 또는 비밀번호가 없으면
 }
+
