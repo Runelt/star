@@ -148,6 +148,31 @@
     .custom-alert-box button:hover {
         background: #45a049;
     }
+
+    .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            background-color: transparent;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        nav ul li:hover .dropdown-content {
+            display: block;
+        }
 </style>
 </head>
 <body>
@@ -161,6 +186,12 @@
         <ul>
             <li><a href="">홈</a></li>
             <li><a href="#about">학교 소개</a></li>
+                <div class="dropdown-content">
+                    <a href="#">학교장의 인사</a>
+                    <a href="#">학교 현황</a>
+                    <a href="#">학교 상징</a>
+                    <a href="www.ichan50.com.html">이찬코리아</a>
+                </div>
             <li><a href="#news">공지사항</a></li>
             <li><a href="#calendar">학사 일정</a></li>
         </ul>
@@ -267,4 +298,5 @@
     }
 </script>
 </body>
+
 </html>
