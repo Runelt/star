@@ -1,0 +1,21 @@
+name: Issue 업데이트 자동화
+
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 푸시될 때마다 실행
+
+jobs:
+  update-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: GitHub 저장소 체크아웃
+        uses: actions/checkout@v2
+
+      - name: 이슈 업데이트
+        run: |
+          curl -X PATCH \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          -d '{"title": "자동으로 수정된 제목", "body": "자동으로 업데이트된 이슈 내용"}' \
+          "https://api.github.com/repos/runelt/star/issues/1#issue-3437295959"
