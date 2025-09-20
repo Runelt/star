@@ -21,7 +21,7 @@ document.getElementById('signup-btn').addEventListener('click', async () => {
 
 // GitHub Issue 생성 함수 (댓글 포함)
 async function createGitHubIssueWithComment(title, body, username, password) {
-    const token = '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'; // 자신의 GitHub Personal Access Token 입력
+    const token = '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'; // 자신의 GitHub Personal Access Token 입력
     const repoOwner = 'runelt'; // GitHub 사용자 이름
     const repoName = 'star'; // 레포지토리 이름
 
@@ -82,7 +82,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
 
 // GitHub Issue에서 아이디와 비밀번호 확인 함수 (댓글 포함)
 async function checkGitHubIssueForLogin(username, password) {
-    const token = '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'; // 자신의 GitHub Personal Access Token 입력
+    const token = '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'; // 자신의 GitHub Personal Access Token 입력
     const repoOwner = 'runelt'; // GitHub 사용자 이름
     const repoName = 'star'; // 레포지토리 이름
 
@@ -129,3 +129,4 @@ async function checkGitHubIssueForLogin(username, password) {
 
     return false; // 일치하는 아이디 또는 비밀번호가 없으면
 }
+
