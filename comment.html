@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>댓글</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tab-container {
+            display: flex;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 20px;
+            border-bottom: 2px solid #4CAF50;
+        }
+
+        .tab-btn {
+            flex: 1;
+            text-align: center;
+            padding: 12px 0;
+            cursor: pointer;
+            background: #ddd;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .tab-content {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-field {
+            width: 94%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 4px;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #45a049;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        li {
+            padding: 8px;
+            background: #f1f1f1;
+            margin: 5px 0;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comment-text {
+            margin-bottom: 5px;
+        }
+
+        .comment-time {
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .delete-btn, .highlight-btn {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            background: #ff4747;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #d43f3f;
+        }
+
+        .highlight-btn {
+            background: #FFD700;
+            color: black;
+        }
+
+        .highlighted {
+            background: #FFF59D !important;
+        }
+
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .custom-alert-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 320px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .custom-alert-box input {
+            width: 90%;
+            padding: 8px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .custom-alert-box button {
+            margin-top: 12px;
+            padding: 8px 16px;
+            background: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .custom-alert-box button:hover {
+            background: #45a049;
+        }
+
+        .custom-alert-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 12px;
+            gap: 12px;
+        }
+
+        .custom-alert-buttons button {
+            width: 120px;
+            padding: 8px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .custom-alert-confirm {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .custom-alert-cancel {
+            background: #ccc;
+            color: #333;
+        }
+
+        .user-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tab-container">
+        <div class="tab-btn active" data-tab="comment">댓글</div>
+        <div class="tab-btn" data-tab="admin">관리자</div>
+        <div class="tab-btn" data-tab="home">홈</div>
+    </div>
+
+    <div class="tab-content" id="comment-tab">
+        <p id="current-user"></p>
+        <ul id="comment-list"></ul>
+        <input type="text" id="new-comment" class="input-field" placeholder="댓글 작성" />
+        <button class="btn" id="submit-comment-btn">올리기</button>
+    </div>
+
+    <div class="tab-content" id="admin-tab" style="display:none;">
+        <ul id="user-list"></ul>
+    </div>
+
+    <div class="tab-content" id="home-tab" style="display:none;">
+        <button class="btn" onclick="location.href='index.html'">홈으로 이동</button>
+    </div>
+
+    <!-- 커스텀 알림창 -->
+    <div id="customAlertOverlay" class="custom-alert-overlay">
+        <div class="custom-alert-box">
+            <p id="customAlertMessage"></p>
+
+            <!-- 확인/취소 버튼 영역 (confirm dialog 에 사용) -->
+            <div id="customAlertButtons" class="custom-alert-buttons" style="display:none;">
+                <button id="confirmBtn" class="custom-alert-confirm">확인</button>
+                <button id="cancelBtn" class="custom-alert-cancel">아니오</button>
+            </div>
+
+            <!-- 일반 메시지용 확인 버튼 -->
+            <input type="text" id="customAlertInput" style="display:none;" />
+            <button id="customAlertBtn" style="display:inline-block;">확인</button>
+        </div>
+    </div>
+
+    <script>
+        // 현재 로그인된 정보 읽기
+        const currentUser = localStorage.getItem('currentUser');
+        const currentAdmin = localStorage.getItem('currentAdmin');
+
+        // 로그인 검사 (관리자 또는 유저가 아니면 로그인 페이지로)
+        if (!currentUser && !currentAdmin) {
+            showCustomAlert('로그인이 필요합니다.', () => { location.href = 'login.html'; });
+        }
+
+        // 탭 처리
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = {
+            comment: document.getElementById('comment-tab'),
+            admin: document.getElementById('admin-tab'),
+            home: document.getElementById('home-tab')
+        };
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                if (tab === 'admin' && !currentAdmin) {
+                    showCustomAlert('관리자만 접근 가능합니다');
+                    return;
+                }
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                Object.keys(tabContents).forEach(k => tabContents[k].style.display = 'none');
+                tabContents[tab].style.display = 'flex';
+                if (tab === 'admin') loadUsers();
+                if (tab === 'comment') loadComments();
+            });
+        });
+
+        // --- 댓글 관련 ---
+        function loadComments() {
+            const commentList = document.getElementById('comment-list');
+            commentList.innerHTML = '';
+
+            const comments = JSON.parse(localStorage.getItem('comments') || '[]')
+                .sort((a, b) => new Date(b.time) - new Date(a.time)); // 최신순(위쪽)
+
+            comments.forEach(c => {
+                const li = document.createElement('li');
+
+                const textDiv = document.createElement('div');
+                textDiv.className = 'comment-text';
+                textDiv.textContent = `${c.user}: ${c.text}`;
+                if (c.highlight) textDiv.classList.add('highlighted');
+                li.appendChild(textDiv);
+
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'comment-time';
+                timeDiv.textContent = c.time;
+                li.appendChild(timeDiv);
+
+                if (currentAdmin) {
+                    const actionDiv = document.createElement('div');
+                    actionDiv.className = 'comment-actions';
+
+                    const delBtn = document.createElement('button');
+                    delBtn.textContent = '삭제';
+                    delBtn.className = 'delete-btn';
+                    delBtn.onclick = () => { confirmDeleteComment(c.text); };
+
+                    const highBtn = document.createElement('button');
+                    highBtn.textContent = c.highlight ? '강조 해제' : '강조';
+                    highBtn.className = 'highlight-btn';
+                    highBtn.onclick = () => { toggleHighlight(c.text); };
+
+                    actionDiv.appendChild(delBtn);
+                    actionDiv.appendChild(highBtn);
+                    li.appendChild(actionDiv);
+                }
+
+                commentList.appendChild(li);
+            });
+        }
+
+        function confirmDeleteComment(text) {
+            showCustomConfirm('정말 삭제하시겠습니까?', () => { deleteComment(text); });
+        }
+
+        function deleteComment(text) {
+            let arr = JSON.parse(localStorage.getItem('comments') || '[]');
+            arr = arr.filter(c => c.text !== text);
+            localStorage.setItem('comments', JSON.stringify(arr));
+            loadComments(); // 즉시 반영
+        }
+
+        function toggleHighlight(text) {
+            let arr = JSON.parse(localStorage.getItem('comments') || '[]');
+            arr.forEach(c => {
+                if (c.text === text) c.highlight = !c.highlight;
+            });
+            localStorage.setItem('comments', JSON.stringify(arr));
+            loadComments();
+        }
+
+        document.getElementById('submit-comment-btn').addEventListener('click', () => {
+            const txt = document.getElementById('new-comment').value.trim();
+            if (!txt) {
+                showCustomAlert('댓글 내용을 입력하세요');
+                return;
+            }
+            if (!currentUser && !currentAdmin) {
+                showCustomAlert('로그인이 필요합니다.');
+                return;
+            }
+
+            const username = currentUser || currentAdmin; // 관리자도 작성 가능
+            const arr = JSON.parse(localStorage.getItem('comments') || '[]');
+            const now = new Date();
+            const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+            arr.push({ user: username, text: txt, highlight: false, time: timeStr });
+            localStorage.setItem('comments', JSON.stringify(arr));
+            document.getElementById('new-comment').value = '';
+            loadComments();
+        });
+
+        // --- 유저 목록 (관리자 탭) ---
+        function loadUsers() {
+            const ul = document.getElementById('user-list');
+            ul.innerHTML = '';
+
+            // 항상 최신 users 배열을 로컬스토리지에서 읽어 화면에 반영
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+            users.forEach(u => {
+                const li = document.createElement('li');
+                li.className = 'user-list-item';
+
+                const span = document.createElement('span');
+                span.textContent = u.username;
+
+                const delBtn = document.createElement('button');
+                delBtn.textContent = '삭제';
+                delBtn.className = 'delete-btn';
+                delBtn.onclick = () => { confirmDeleteUser(u.username); };
+
+                li.appendChild(span);
+                li.appendChild(delBtn);
+                ul.appendChild(li);
+            });
+        }
+
+        function confirmDeleteUser(username) {
+            showCustomConfirm('정말 삭제하시겠습니까?', () => { deleteUser(username); });
+        }
+
+        function deleteUser(username) {
+            let arr = JSON.parse(localStorage.getItem('users') || '[]');
+            arr = arr.filter(u => u.username !== username);
+            localStorage.setItem('users', JSON.stringify(arr));
+            loadUsers(); // 즉시 반영
+        }
+
+        // --- 커스텀 알림 / 확인창 ---
+        function showCustomAlert(msg, callback) {
+            const overlay = document.getElementById('customAlertOverlay');
+            const msgElem = document.getElementById('customAlertMessage');
+            const inputElem = document.getElementById('customAlertInput');
+            const btn = document.getElementById('customAlertBtn');
+            const confirmDiv = document.getElementById('customAlertButtons');
+
+            overlay.style.display = 'flex';
+            msgElem.textContent = msg;
+            inputElem.style.display = 'none';
+            confirmDiv.style.display = 'none';
+            btn.style.display = 'inline-block';
+
+            // remove previous handlers to avoid duplicates
+            btn.onclick = null;
+            btn.onclick = () => {
+                overlay.style.display = 'none';
+                if (typeof callback === 'function') callback();
+            };
+        }
+
+        function showCustomConfirm(msg, callback) {
+            const overlay = document.getElementById('customAlertOverlay');
+            const msgElem = document.getElementById('customAlertMessage');
+            const inputElem = document.getElementById('customAlertInput');
+            const btn = document.getElementById('customAlertBtn');
+            const confirmDiv = document.getElementById('customAlertButtons');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            overlay.style.display = 'flex';
+            msgElem.textContent = msg;
+            inputElem.style.display = 'none';
+            btn.style.display = 'none';
+            confirmDiv.style.display = 'flex';
+
+            // remove previous handlers
+            confirmBtn.onclick = null;
+            cancelBtn.onclick = null;
+
+            confirmBtn.onclick = () => {
+                overlay.style.display = 'none';
+                if (typeof callback === 'function') callback();
+            };
+            cancelBtn.onclick = () => {
+                overlay.style.display = 'none';
+            };
+        }
+
+        // 초기 화면 설정
+        document.getElementById('current-user').textContent = currentUser ? `아이디: ${currentUser}` : (currentAdmin ? `아이디: ${currentAdmin}` : '로그인 필요');
+        loadComments();
+    </script>
+</body>
+</html>

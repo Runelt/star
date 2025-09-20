@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>별빛학교 홈페이지</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        color: #333;
+        margin: 0;
+    }
+
+    /* 헤더 */
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        flex-wrap: wrap;
+    }
+
+    .header-left { flex: 1; }
+    .logo h1 { font-size: 30px; margin: 0; }
+
+    .header-center {
+        flex: 2;
+        display: flex;
+        justify-content: center;
+    }
+
+    .header-center ul {
+        display: flex;
+        gap: 20px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .header-center ul li a {
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+        transition: color 0.3s;
+    }
+
+    .header-center ul li a:hover {
+        color: #FFD700;
+    }
+
+    .header-right { 
+        flex: 1; 
+        display: flex; 
+        justify-content: flex-end; 
+    }
+
+    .login-btn {
+        background: #FFD700;
+        color: #333;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 16px;
+        cursor: pointer;
+    }
+
+    .login-btn:hover {
+        background: #FFC107;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    .section {
+        margin-bottom: 30px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+        font-size: 22px;
+        color: #333;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+
+    .button-container {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+
+    .button-container button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        background: #4CAF50;
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+        min-width: auto;
+    }
+
+    .button-container button:hover {
+        background: #45a049;
+    }
+
+    /* 커스텀 알림창 */
+    .custom-alert-overlay {
+        position: fixed;
+        top:0; left:0;
+        width:100%; height:100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+    }
+
+    .custom-alert-box {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        width: 300px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .custom-alert-box button {
+        margin-top: 20px;
+        padding: 8px 16px;
+        background: #4CAF50;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .custom-alert-box button:hover {
+        background: #45a049;
+    }
+</style>
+</head>
+<body>
+<header>
+    <div class="header-left">
+        <div class="logo">
+            <h1>별빛학교</h1>
+        </div>
+    </div>
+    <div class="header-center">
+        <ul>
+            <li><a href="">홈</a></li>
+            <li><a href="#about">학교 소개</a></li>
+            <li><a href="#news">공지사항</a></li>
+            <li><a href="#calendar">학사 일정</a></li>
+        </ul>
+    </div>
+    <div class="header-right">
+        <button id="login-page-btn" class="login-btn">로그인</button>
+    </div>
+</header>
+
+<main>
+    <!-- 학교 소개 -->
+    <section id="about" class="section">
+        <h2>교육 철학</h2>
+        <ul>
+            <li>I 희망을 갖도록 한다.</li>
+            <li>II 노력하는 모습을 갖추도록 한다.</li>
+            <li>III 빛을 잃지 않는 태도를 보여주도록 한다.</li>
+        </ul>
+    </section>
+
+    <!-- 공지사항 -->
+    <section id="news" class="section">
+        <h2>공지사항</h2>
+        <ul>
+            <li><a href="#">1학기 2차 지필 평가 시험일자 및 범위 안내</a></li>
+            <li><a href="#">학교 홈페이지 리뉴얼 공지</a></li>
+            <li><a href="#">3학년 증명 및 단체 사진 안내 가정통신문</a></li>
+        </ul>
+    </section>
+
+    <!-- 학사 일정 -->
+    <section id="calendar" class="section">
+        <h2>학사 일정</h2>
+        <ul>
+            <li>1학기 시작일: 3월 2일</li>
+            <li>1학기 1차 지필: 4월 19일</li>
+            <li>수련회: 5월 21일</li>
+            <li>1학기 2차 지필: 6월 30일</li>
+            <li>여름 방학: 7월 17일</li>
+            <li>2학기 시작일: 8월 18일</li>
+            <li>2학기 1차 지필: 9월 30일</li>
+            <li>체육 및 이스포츠 대회: 10월 5일</li>
+            <li>2학기 2차 지필: 12월 2일</li>
+            <li>종업 및 졸업식: 2월 28일</li>
+        </ul>
+    </section>
+
+    <!-- 게시판/댓글 버튼 -->
+    <section id="board" class="section">
+        <div class="button-container">
+            <button id="board-btn">게시판</button>
+            <button id="comment-btn">댓글</button>
+        </div>
+    </section>
+</main>
+
+<!-- 커스텀 알림창 -->
+<div id="customAlertOverlay" class="custom-alert-overlay">
+    <div class="custom-alert-box">
+        <p id="customAlertMessage"></p>
+        <button onclick="document.getElementById('customAlertOverlay').style.display='none'">확인</button>
+    </div>
+</div>
+
+<script>
+    const loginBtn = document.getElementById('login-page-btn');
+
+    // 로그인 상태 확인
+    function updateLoginBtn(){
+        const currentUser = localStorage.getItem('currentUser');
+        const currentAdmin = localStorage.getItem('currentAdmin');
+        if(currentUser || currentAdmin){
+            loginBtn.textContent = '로그아웃';
+        } else {
+            loginBtn.textContent = '로그인';
+        }
+    }
+    updateLoginBtn();
+
+    loginBtn.addEventListener('click', () => {
+        const currentUser = localStorage.getItem('currentUser');
+        const currentAdmin = localStorage.getItem('currentAdmin');
+        if(currentUser || currentAdmin){
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentAdmin');
+            showCustomAlert('로그아웃 되었습니다');
+            updateLoginBtn();
+        } else {
+            window.location.href = 'login.html';
+        }
+    });
+
+    document.getElementById('comment-btn').addEventListener('click', () => {
+        window.location.href = 'comment.html';
+    });
+
+    document.getElementById('board-btn').addEventListener('click', () => {
+        alert('게시판 파일 연결 필요');
+    });
+
+    function showCustomAlert(msg){
+        document.getElementById('customAlertMessage').textContent = msg;
+        document.getElementById('customAlertOverlay').style.display = 'flex';
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>로그인</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* comment.html 스타일과 같은 상단 탭 */
+    .tab-container {
+        display: flex;
+        width: 100%;
+        max-width: 400px;
+        margin-top: 20px;
+        border-bottom: 2px solid #4CAF50;
+    }
+
+    .tab-btn {
+        flex: 1;
+        text-align: center;
+        padding: 12px 0;
+        cursor: pointer;
+        background-color: #ddd;
+        font-weight: bold;
+        transition: background 0.3s;
+    }
+
+    .tab-btn.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .tab-content {
+        background-color: white;
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .input-field {
+        width: 94%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 4px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #45a049;
+    }
+
+    .signup-btn {
+        background-color: #aaa;
+    }
+
+    /* 커스텀 알림창 */
+    .custom-alert-overlay {
+        position: fixed;
+        top:0; left:0;
+        width:100%; height:100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+    }
+
+    .custom-alert-box {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        width: 300px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .custom-alert-box input {
+        width: 90%;
+        padding: 8px;
+        margin-top: 10px;
+        font-size: 16px;
+    }
+
+    .custom-alert-box button {
+        margin-top: 20px;
+        padding: 8px 16px;
+        background: #4CAF50;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .custom-alert-box button:hover {
+        background: #45a049;
+    }
+</style>
+</head>
+<body>
+
+<div class="tab-container">
+    <div class="tab-btn active" data-tab="login">로그인</div>
+    <div class="tab-btn" data-tab="admin">관리자</div>
+    <div class="tab-btn" data-tab="home">홈</div>
+</div>
+
+<div class="tab-content" id="login-tab">
+    <input type="text" id="username" class="input-field" placeholder="아이디" required />
+    <input type="password" id="password" class="input-field" placeholder="비밀번호" required />
+    <button class="btn" id="login-btn">로그인</button>
+    <button class="btn signup-btn" id="signup-btn">회원가입</button>
+</div>
+
+<div class="tab-content" id="admin-tab" style="display:none;">
+    <input type="text" id="admin-username" class="input-field" placeholder="관리자 아이디" required />
+    <input type="password" id="admin-password" class="input-field" placeholder="관리자 비밀번호" required />
+    <button class="btn" id="admin-login-btn">관리자 로그인</button>
+</div>
+
+<div class="tab-content" id="home-tab" style="display:none;">
+    <button class="btn" onclick="location.href='index.html'">홈으로 이동</button>
+</div>
+
+<!-- 커스텀 알림창 -->
+<div id="customAlertOverlay" class="custom-alert-overlay">
+    <div class="custom-alert-box">
+        <p id="customAlertMessage"></p>
+        <input type="text" id="customAlertInput" style="display:none;" />
+        <button id="customAlertBtn">확인</button>
+    </div>
+</div>
+
+<script>
+    // 탭 전환
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = {
+        login: document.getElementById('login-tab'),
+        admin: document.getElementById('admin-tab'),
+        home: document.getElementById('home-tab')
+    };
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const tab = btn.getAttribute('data-tab');
+            Object.keys(tabContents).forEach(k => tabContents[k].style.display = 'none');
+            tabContents[tab].style.display = 'block';
+        });
+    });
+
+    const adminAccount = { username: 'A', password: 'A' };
+    if (!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([adminAccount]));
+
+    // 로그인
+    document.getElementById('login-btn').addEventListener('click', () => {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const users = JSON.parse(localStorage.getItem('users'));
+        const user = users.find(u => u.username === username && u.password === password);
+        if (user) {
+            localStorage.setItem('currentUser', username);
+            showCustomAlert(`환영합니다, ${username}님!`, () => location.href='index.html');
+        } else {
+            showCustomAlert('아이디 또는 비밀번호가 틀렸습니다');
+        }
+    });
+
+    // 관리자 로그인
+    document.getElementById('admin-login-btn').addEventListener('click', () => {
+        const username = document.getElementById('admin-username').value.trim();
+        const password = document.getElementById('admin-password').value.trim();
+        if(username === adminAccount.username && password === adminAccount.password){
+            localStorage.setItem('currentAdmin', username);
+            showCustomAlert(`관리자 로그인 성공`, () => location.href='index.html');
+        } else {
+            showCustomAlert('관리자 아이디 또는 비밀번호가 틀렸습니다');
+        }
+    });
+
+    // 회원가입
+    document.getElementById('signup-btn').addEventListener('click', async () => {
+        const username = await customPrompt('사용할 아이디를 입력하세요');
+        if(!username) return;
+        const password = await customPrompt('비밀번호를 입력하세요', true);
+        if(!password) return;
+        const passwordConfirm = await customPrompt('비밀번호를 다시 입력하세요', true);
+        if(!passwordConfirm) return;
+        if(password !== passwordConfirm){
+            showCustomAlert('비밀번호가 일치하지 않습니다');
+            return;
+        }
+        const users = JSON.parse(localStorage.getItem('users'));
+        if(users.find(u => u.username === username)){
+            showCustomAlert('이미 존재하는 아이디입니다');
+            return;
+        }
+        users.push({ username, password });
+        localStorage.setItem('users', JSON.stringify(users));
+        showCustomAlert('회원가입 완료! 로그인 해주세요.');
+    });
+
+    // 커스텀 알림창
+    function showCustomAlert(message, callback){
+        const overlay = document.getElementById('customAlertOverlay');
+        const msgElem = document.getElementById('customAlertMessage');
+        const inputElem = document.getElementById('customAlertInput');
+        const btn = document.getElementById('customAlertBtn');
+        msgElem.textContent = message;
+        inputElem.style.display = 'none';
+        inputElem.value = '';
+        overlay.style.display = 'flex';
+        btn.onclick = () => {
+            overlay.style.display = 'none';
+            if(callback) callback();
+        };
+    }
+
+    function customPrompt(message, password=false){
+        return new Promise((resolve)=>{
+            const overlay = document.getElementById('customAlertOverlay');
+            const msgElem = document.getElementById('customAlertMessage');
+            const inputElem = document.getElementById('customAlertInput');
+            const btn = document.getElementById('customAlertBtn');
+            msgElem.textContent = message;
+            inputElem.style.display = 'block';
+            inputElem.type = password ? 'password' : 'text';
+            inputElem.value = '';
+            overlay.style.display = 'flex';
+            inputElem.focus();
+            btn.onclick = () => {
+                overlay.style.display = 'none';
+                resolve(inputElem.value.trim());
+            };
+        });
+    }
+</script>
+
+</body>
+</html>
