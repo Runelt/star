@@ -167,16 +167,16 @@
     }
 
     .dropdown-content a {
-        color: black !important;
+        color: black !important; /* 글자 색상을 검정으로 강제 */
         padding: 12px 16px;
         text-decoration: none;
         display: block;
-        background-color: transparent;
+        background-color: #fff;
     }
 
     .dropdown-content a:hover {
         background-color: #ddd;
-        color: gold !important;
+        color: black !important; /* hover 시에도 검정 유지 */
     }
 
     .header-center ul li:hover .dropdown-content {
@@ -212,7 +212,6 @@
 </header>
 
 <main>
-    <!-- 학교 소개 -->
     <section id="about" class="section">
         <h2>교육 철학</h2>
         <ul>
@@ -222,7 +221,6 @@
         </ul>
     </section>
 
-    <!-- 공지사항 -->
     <section id="news" class="section">
         <h2>공지사항</h2>
         <ul>
@@ -232,7 +230,6 @@
         </ul>
     </section>
 
-    <!-- 학사 일정 -->
     <section id="calendar" class="section">
         <h2>학사 일정</h2>
         <ul>
@@ -249,7 +246,6 @@
         </ul>
     </section>
 
-    <!-- 게시판/댓글 버튼 -->
     <section id="board" class="section">
         <div class="button-container">
             <button id="board-btn">게시판</button>
@@ -258,7 +254,6 @@
     </section>
 </main>
 
-<!-- 커스텀 알림창 -->
 <div id="customAlertOverlay" class="custom-alert-overlay">
     <div class="custom-alert-box">
         <p id="customAlertMessage"></p>
@@ -294,7 +289,7 @@
     });
 
     document.getElementById('board-btn').addEventListener('click', () => {
-        alert('게시판 파일 연결 필요');
+        window.location.href = 'www.ichanko50.com.html'
     });
 
     function showCustomAlert(msg){
