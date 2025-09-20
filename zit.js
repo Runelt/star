@@ -5,7 +5,7 @@ async function sendCommentToGitHub(username, comment) {
     const issueNumber = 1; // 댓글을 추가할 이슈 번호 (예시로 1번을 사용)
     const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${issueNumber}/comments`;
 
-    const githubToken = 'YOUR_PERSONAL_ACCESS_TOKEN'; // GitHub Personal Access Token
+    const githubToken = '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'; // GitHub Personal Access Token
 
     const commentData = {
         body: `아이디: ${username}\n댓글: ${comment}`
@@ -32,3 +32,4 @@ async function sendCommentToGitHub(username, comment) {
         alert('GitHub API 요청 중 오류가 발생했습니다.');
     }
 }
+
