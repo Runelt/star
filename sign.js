@@ -24,7 +24,7 @@ document.getElementById('signup-btn').addEventListener('click', async () => {
 
 // GitHub Issue 생성 함수
 async function createGitHubIssue(title, body) {
-    const token = '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'; // GitHub Personal Access Token
+    const token = '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'; // GitHub Personal Access Token
     const repoOwner = 'runelt'; // GitHub 사용자 이름
     const repoName = 'star'; // 레포지토리 이름 (Issue를 생성할 레포지토리)
 
@@ -76,7 +76,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
 
 // GitHub Issue에서 아이디와 비밀번호 확인 함수
 async function checkGitHubIssueForLogin(username, password) {
-    const token = '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'; // 자신의 GitHub Personal Access Token
+    const token = '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'; // 자신의 GitHub Personal Access Token
     const repoOwner = 'runelt'; // GitHub 사용자 이름
     const repoName = 'star'; // 레포지토리 이름 (Issue를 확인할 레포지토리)
 
@@ -114,3 +114,4 @@ async function checkGitHubIssueForLogin(username, password) {
 
     return false; // 일치하는 아이디 또는 비밀번호가 없으면
 }
+
