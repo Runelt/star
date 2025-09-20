@@ -28,7 +28,7 @@ async function createGitHubIssue(title, body) {
     const repoOwner = 'runelt'; // GitHub 사용자 이름
     const repoName = 'star'; // 레포지토리 이름 (Issue를 생성할 레포지토리)
 
-    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues`;
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/2`;
     const headers = {
         'Authorization': `token ${token}`,
         'Accept': 'application/vnd.github.v3+json',
@@ -80,7 +80,7 @@ async function checkGitHubIssueForLogin(username, password) {
     const repoOwner = 'runelt'; // GitHub 사용자 이름
     const repoName = 'star'; // 레포지토리 이름 (Issue를 확인할 레포지토리)
 
-    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues`;
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/2`;
     const headers = {
         'Authorization': `token ${token}`,
         'Accept': 'application/vnd.github.v3+json',
@@ -114,4 +114,5 @@ async function checkGitHubIssueForLogin(username, password) {
 
     return false; // 일치하는 아이디 또는 비밀번호가 없으면
 }
+
 
