@@ -176,20 +176,6 @@
     const adminAccount = { username: 'A', password: 'A' };
     if (!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([adminAccount]));
 
-    // 로그인
-    document.getElementById('login-btn').addEventListener('click', () => {
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const users = JSON.parse(localStorage.getItem('users'));
-        const user = users.find(u => u.username === username && u.password === password);
-        if (user) {
-            localStorage.setItem('currentUser', username);
-            showCustomAlert(`환영합니다, ${username}님!`, () => location.href='index.html');
-        } else {
-            showCustomAlert('아이디 또는 비밀번호가 틀렸습니다');
-        }
-    });
-
     // 관리자 로그인
     document.getElementById('admin-login-btn').addEventListener('click', () => {
         const username = document.getElementById('admin-username').value.trim();
@@ -200,28 +186,6 @@
         } else {
             showCustomAlert('관리자 아이디 또는 비밀번호가 틀렸습니다');
         }
-    });
-
-    // 회원가입
-    document.getElementById('signup-btn').addEventListener('click', async () => {
-        const username = await customPrompt('사용할 아이디를 입력하세요');
-        if(!username) return;
-        const password = await customPrompt('비밀번호를 입력하세요', true);
-        if(!password) return;
-        const passwordConfirm = await customPrompt('비밀번호를 다시 입력하세요', true);
-        if(!passwordConfirm) return;
-        if(password !== passwordConfirm){
-            showCustomAlert('비밀번호가 일치하지 않습니다');
-            return;
-        }
-        const users = JSON.parse(localStorage.getItem('users'));
-        if(users.find(u => u.username === username)){
-            showCustomAlert('이미 존재하는 아이디입니다');
-            return;
-        }
-        users.push({ username, password });
-        localStorage.setItem('users', JSON.stringify(users));
-        showCustomAlert('회원가입 완료! 로그인 해주세요.');
     });
 
     // 커스텀 알림창
@@ -259,8 +223,9 @@
         });
     }
 </script>
-    <script src="sign.js"></script>
+<script src="sign.js"></script>
 
 </body>
 
 </html>
+
