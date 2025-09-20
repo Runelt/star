@@ -2,7 +2,7 @@
 async function sendCommentToGitHub(username, comment) {
     const repoOwner = 'runelt'; // 레포지토리 소유자
     const repoName = 'star'; // 레포지토리 이름
-    const issueNumber = 1; // 댓글을 추가할 이슈 번호 (예시로 1번을 사용)
+    const issueNumber = '1'; // 댓글을 추가할 이슈 번호 (예시로 1번을 사용)
     const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${issueNumber}/comments`;
 
     const githubToken = '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'; // GitHub Personal Access Token
@@ -32,4 +32,5 @@ async function sendCommentToGitHub(username, comment) {
         alert('GitHub API 요청 중 오류가 발생했습니다.');
     }
 }
+
 
