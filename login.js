@@ -55,8 +55,7 @@ async function handleLogin(isAdmin = false) {
         }
     } else {
         // 일반 사용자 로그인
-        const users = await fetchUsers(); // 유저 데이터 가져오기
-        console.log('받아온 유저 목록:', users);  // 데이터 확인
+        const users = await fetchUsers();  // 유저 목록을 가져오기 위해 기다림
         const user = users.find(u => u.username === username && u.password === password);
 
         if (user) {
@@ -67,6 +66,7 @@ async function handleLogin(isAdmin = false) {
         }
     }
 }
+
 // 로그인 버튼 이벤트 리스너
 document.getElementById('login-btn').addEventListener('click', () => handleLogin(false));  // 일반 로그인
 document.getElementById('admin-login-btn').addEventListener('click', () => handleLogin(true));  // 관리자 로그인
@@ -110,6 +110,7 @@ function customPrompt(message, password = false) {
 document.getElementById('signup').addEventListener('click', async () => {
     const username = showCustomAlert('회원가입은 디스코드로 문의해주세요');
 })
+
 
 
 
