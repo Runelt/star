@@ -18,14 +18,15 @@ tabBtns.forEach(btn => {
 // 기본 관리자 계정
 const adminAccount = { username: 'admin', password: 'admin123' };
 
-// Gist에서 유저 데이터 가져오기
-const usersGistUrl = 'https://gist.githubusercontent.com/Runelt/7d391bd9279f03ddf247b71c4a3f8f23/raw/bfd713edc6eff5b5a38f040e32f15c649d3db12a/users.json';  // Gist ID로 교체
+// Gist URL 확인 필요
+const usersGistUrl = 'https://gist.githubusercontent.com/Runelt/7d391bd9279f03ddf247b71c4a3f8f23/raw/bfd713edc6eff5b5a38f040e32f15c649d3db12a/users.json'; 
 
+// 유저 데이터 가져오기
 async function fetchUsers() {
     try {
         const response = await fetch(usersGistUrl);
         const data = await response.json();
-        const usersJson = JSON.parse(atob(data.files['users.json'].content));
+        const usersJson = JSON.parse(atob(data.files['users.json'].content)); // Base64 디코딩
         return usersJson.users;
     } catch (error) {
         console.error('유저 데이터를 가져오는 중 오류 발생:', error);
@@ -102,4 +103,4 @@ function customPrompt(message, password = false) {
 // 회원 가입 알림
 document.getElementById('signup').addEventListener('click', async () => {
     const username = showCustomAlert('회원가입은 디스코드로 문의해주세요');
-});
+})
