@@ -26,7 +26,11 @@ async function fetchUsers() {
     try {
         const response = await fetch(usersGistUrl);
         const data = await response.json();
-        const usersJson = JSON.parse(atob(data.files['users.json'].content)); // Base64 디코딩
+        console.log(data); // 데이터 구조 확인
+        
+        // JSON 파일이 'users.json'에 포함된 경우
+        const usersJson = JSON.parse(atob(data.files['users.json'].content));  
+        console.log(usersJson);  // 제대로 파싱된 JSON 확인
         return usersJson.users;
     } catch (error) {
         console.error('유저 데이터를 가져오는 중 오류 발생:', error);
@@ -104,4 +108,5 @@ function customPrompt(message, password = false) {
 document.getElementById('signup').addEventListener('click', async () => {
     const username = showCustomAlert('회원가입은 디스코드로 문의해주세요');
 })
+
 
