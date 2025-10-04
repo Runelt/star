@@ -19,7 +19,7 @@ tabBtns.forEach(btn => {
 const adminAccount = { username: 'admin', password: 'admin123' };
 
 // Gist URL 확인 필요
-const usersGistUrl = 'https://gist.githubusercontent.com/Runelt/7d391bd9279f03ddf247b71c4a3f8f23/raw/bfd713edc6eff5b5a38f040e32f15c649d3db12a/users.json'; 
+const usersGistUrl = 'https://gist.githubusercontent.com/Runelt/7d391bd9279f03ddf247b71c4a3f8f23/raw/dcb863e008245520aa11ceeb43388f2c398b7935/users.json'; 
 
 // 유저 데이터 가져오기
 async function fetchUsers() {
@@ -104,3 +104,4 @@ function customPrompt(message, password = false) {
 document.getElementById('signup').addEventListener('click', async () => {
     const username = showCustomAlert('회원가입은 디스코드로 문의해주세요');
 })
+
