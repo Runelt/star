@@ -26,8 +26,10 @@ async function fetchUsers() {
     try {
         const response = await fetch(usersGistUrl);
         const data = await response.json();
-        console.log(data); // 데이터 구조 확인
         
+        // 응답 구조를 확인해보기 위해 console.log 사용
+        console.log(data); // 데이터 구조 확인
+
         // JSON 파일이 'users.json'에 포함된 경우
         const usersJson = JSON.parse(atob(data.files['users.json'].content));  
         console.log(usersJson);  // 제대로 파싱된 JSON 확인
@@ -108,5 +110,6 @@ function customPrompt(message, password = false) {
 document.getElementById('signup').addEventListener('click', async () => {
     const username = showCustomAlert('회원가입은 디스코드로 문의해주세요');
 })
+
 
 
