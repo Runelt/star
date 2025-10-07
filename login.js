@@ -1,3 +1,5 @@
+import { showToast } from './alert.js';
+
 const tabBtns = document.querySelectorAll('.tab-btn');
 const tabContents = {
     login: document.getElementById('login-tab'),
@@ -27,7 +29,7 @@ async function fetchUsers() {
     try {
         const response = await fetch(usersGistUrl);
         const data = await response.json();
-        
+
         // 응답 구조 확인
         console.log(data);  // 응답 구조 확인
 
@@ -53,9 +55,9 @@ async function handleLogin(isAdmin = false) {
         // 관리자 로그인
         if (username === adminAccount.username && password === adminAccount.password) {
             localStorage.setItem('currentAdmin', username);
-            showCustomAlert('로그인 성공', () => location.href = 'index.html');
+            showToast('로그인 성공', () => location.href = 'index.html');
         } else {
-            showCustomAlert('관리자 아이디 또는 비밀번호가 틀렸습니다');
+            showToast('관리자 아이디 또는 비밀번호가 틀렸습니다');
         }
     } else {
         // 일반 사용자 로그인
@@ -65,13 +67,16 @@ async function handleLogin(isAdmin = false) {
 
             if (user) {
                 localStorage.setItem('currentUser', username);
-                showCustomAlert(`환영합니다, ${username}님`, () => location.href = 'index.html');
+                showToast(`환영합니다, ${username}님`);
+                setTimeout(() => {
+                    window.location.href = 'index.html'; // 로그인 페이지로 리디렉션
+                }, 1000); // 2초 후 로그인 페이지로 이동
             } else {
-                showCustomAlert('아이디 또는 비밀번호가 틀렸습니다');
+                showToast('아이디 또는 비밀번호가 틀렸습니다');
             }
         } catch (error) {
             console.error('로그인 중 오류 발생:', error);
-            showCustomAlert('유저 데이터를 가져오는 데 문제가 발생했습니다');
+            showToast('유저 데이터를 가져오는 데 문제가 발생했습니다');
         }
     }
 }
@@ -80,43 +85,7 @@ async function handleLogin(isAdmin = false) {
 document.getElementById('login-btn').addEventListener('click', () => handleLogin(false));  // 일반 로그인
 document.getElementById('admin-login-btn').addEventListener('click', () => handleLogin(true));  // 관리자 로그인
 
-// 커스텀 알림창
-function showCustomAlert(message, callback) {
-    const overlay = document.getElementById('customAlertOverlay');
-    const msgElem = document.getElementById('customAlertMessage');
-    const inputElem = document.getElementById('customAlertInput');
-    const btn = document.getElementById('customAlertBtn');
-    msgElem.textContent = message;
-    inputElem.style.display = 'none';
-    inputElem.value = '';
-    overlay.style.display = 'flex';
-    btn.onclick = () => {
-        overlay.style.display = 'none';
-        if (callback) callback();
-    };
-}
-
-// 사용자 입력 받기 위한 커스텀 프로프트
-function customPrompt(message, password = false) {
-    return new Promise((resolve) => {
-        const overlay = document.getElementById('customAlertOverlay');
-        const msgElem = document.getElementById('customAlertMessage');
-        const inputElem = document.getElementById('customAlertInput');
-        const btn = document.getElementById('customAlertBtn');
-        msgElem.textContent = message;
-        inputElem.style.display = 'block';
-        inputElem.type = password ? 'password' : 'text';
-        inputElem.value = '';
-        overlay.style.display = 'flex';
-        inputElem.focus();
-        btn.onclick = () => {
-            overlay.style.display = 'none';
-            resolve(inputElem.value.trim());
-        };
-    });
-}
-
 // 회원 가입 알림
 document.getElementById('signup').addEventListener('click', async () => {
-    showCustomAlert('회원가입은 디스코드로 문의해주세요');
+    showToast('회원가입은 디스코드로 문의해주세요');
 });
