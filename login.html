@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>로그인</title>
 <link rel="stylesheet" href="login.css">
+<link rel="stylesheet" href="alert.css">
 </head>
 <body>
 
@@ -31,16 +32,9 @@
     <button class="btn" onclick="location.href='index.html'">이동하기</button>
 </div>
 
-<!-- 커스텀 알림창 -->
-<div id="customAlertOverlay" class="custom-alert-overlay">
-    <div class="custom-alert-box">
-        <p id="customAlertMessage"></p>
-        <input type="text" id="customAlertInput" style="display:none;" />
-        <button id="customAlertBtn">확인</button>
-    </div>
-</div>
-
+<div id="custom-toast-container"></div>
 <script src="login.js"></script>
+<script src="alert.js"></script>
 
 </body>
 </html>
